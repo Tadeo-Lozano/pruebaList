@@ -1,11 +1,9 @@
 package edu.uaslp.objetos.taskslist;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class TaskList {
-    ArrayList<Task> taskLinkedList = new ArrayList<>();
+    LinkedList<Task> taskLinkedList = new LinkedList<>();
 
     public TaskList(){
     }
@@ -47,11 +45,26 @@ public class TaskList {
     }
 
     public Task getNextTask() {
+        String title = taskLinkedList.element().getTitle();
 
-        return new Task();//**
+        int size = taskLinkedList.size(),i;
+
+        for(i = 0; !Objects.equals(title, taskLinkedList.get(i).getTitle()) && size > i; i++);
+        return taskLinkedList.get(i+1);//**
     }
 
     public List<Task> getNextTasks() {
-        return new ArrayList<>();
+        List<Task> taskList = new LinkedList<>();
+
+        int size = this.taskLinkedList.size();
+        for (Task task : this.taskLinkedList) {
+            if (!task.isDone()) {
+                taskList.add(task);
+            }
+        }
+
+        taskList.sort(Comparator.comparing(Task::getDueDate));
+
+        return taskList;
     }
 }
